@@ -24,7 +24,7 @@ Vagrant.configure("2") do |config|
         box.vm.provision "shell", inline: <<-SHELL
           echo -en "192.168.1.2 web\n192.168.1.3 log\n\n" | sudo tee -a /etc/hosts
           SHELL
-        box.vm.provision "shell", path: boxconfig[:script]
+        box.vm.provision "shell", privileged: true, path: boxconfig[:script]
     end
   end
 end
