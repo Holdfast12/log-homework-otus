@@ -3,3 +3,4 @@ https://en.wikipedia.org/wiki/Syslog#Facility
 
 важность
 https://en.wikipedia.org/wiki/Syslog#Severity_level
+
