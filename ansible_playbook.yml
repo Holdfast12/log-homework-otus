@@ -1,0 +1,38 @@
+---
+- hosts: webservers
+  become: yes
+  vars:
+    nginx_port: 8080
+  tasks:
+  - name: install nginx
+    ansible.builtin.dnf:
+      name: nginx
+      state: present
+    notify:
+      - enable nginx
+      - create nginx_conf
+      
+  handlers:
+  
+  - name: create nginx_conf
+    template:
+      src: templates/nginx.conf.j2
+      dest: /etc/nginx/nginx.conf
+      owner: root
+      group: root
+      mode: 0644
+    tags:
+      - nginx_conf
+    notify:
+      - start nginx
+     
+  - name: enable nginx
+    ansible.builtin.systemd:
+      name: nginx
+      enabled: yes
+      
+  - name: start nginx
+    ansible.builtin.service:
+      name: nginx
+      state: started
+...
