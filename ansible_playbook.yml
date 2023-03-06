@@ -1,38 +1,37 @@
 ---
-- hosts: webservers
+- hosts: rsyslog-server
   become: yes
-  vars:
-    nginx_port: 8080
   tasks:
-  - name: install nginx
+  - name: install rsyslog
     ansible.builtin.dnf:
-      name: nginx
+      name: rsyslog
       state: present
     notify:
-      - enable nginx
-      - create nginx_conf
+      - rsyslog server config
+      - enable rsyslog
       
   handlers:
   
-  - name: create nginx_conf
-    template:
-      src: templates/nginx.conf.j2
-      dest: /etc/nginx/nginx.conf
-      owner: root
-      group: root
-      mode: 0644
-    tags:
-      - nginx_conf
+  - name: rsyslog server config
+    replace:
+      path: /etc/rsyslog.conf
+      regexp: "{{ item }}"
+      replace: "\\1"
+    loop:
+      - '#(module\(load=”imudp”\))'
+      - '#(input\(type=”imudp” port=”514”\))'
+      - '#(module\(load=”imtcp”\))'
+      - '#(input\(type=”imtcp” port=”514”\))'
     notify:
-      - start nginx
+      - start rsyslog
      
-  - name: enable nginx
+  - name: enable rsyslog
     ansible.builtin.systemd:
-      name: nginx
+      name: rsyslog
       enabled: yes
       
-  - name: start nginx
+  - name: start rsyslog
     ansible.builtin.service:
-      name: nginx
+      name: rsyslog
       state: started
 ...

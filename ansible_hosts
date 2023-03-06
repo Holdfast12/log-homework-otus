@@ -1,4 +1,3 @@
-[webservers]
-server1
-server2
-
+web-server
+rsyslog-server
+elk-server
