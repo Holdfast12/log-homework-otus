@@ -17,3 +17,6 @@ $template RemoteLogs,"/var/log/rsyslog/%HOSTNAME%/%PROGRAMNAME%.log"
 EOT
 
 systemctl restart rsyslog
+
+зайти на докер контейнер
+docker -it es-hot bash

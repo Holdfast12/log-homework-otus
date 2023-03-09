@@ -1,5 +1,5 @@
 ---
-- hosts: rsyslog-server
+- hosts: rsyslog
   become: yes
   tasks:
   - name: install rsyslog
