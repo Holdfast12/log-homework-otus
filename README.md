@@ -6,5 +6,5 @@ Vagrantfile - вагрантфайл
 скрипты для провижининга через vagrant
 ansible.sh
 web_server.sh
-log_server.sh
-elk_server.sh
+rsyslog.sh
+elk.sh
