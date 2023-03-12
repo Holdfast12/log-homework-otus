@@ -1,6 +1,4 @@
 #!/bin/bash
-echo elk-server > /etc/hostname
-hostname elk-server
 
 dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 dnf install -y docker-ce docker-ce-cli containerd.io
