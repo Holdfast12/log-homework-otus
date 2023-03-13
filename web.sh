@@ -1,6 +1,4 @@
 #!/bin/bash
-echo web-server > /etc/hostname
-hostname web-server
 
 yum install -y nginx
 systemctl enable nginx --now

@@ -53,11 +53,13 @@ services:
 
   filebeat:
     image: elastic/filebeat:7.2.0
+    command: filebeat -e -strict.perms=false
     container_name: filebeat
     privileged: true
     user: root
     volumes:
       - ./configs/filebeat.yml:/usr/share/filebeat/filebeat.yml:Z
+      - ./nginx.yml:/etc/filebeat/modules.d/nginx.yml:Z
       - /var/lib/docker:/var/lib/docker:Z
       - /var/run/docker.sock:/var/run/docker.sock:Z
       - /var/log/:/logs
