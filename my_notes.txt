@@ -20,3 +20,7 @@ systemctl restart rsyslog
 
 зайти на докер контейнер
 docker -it es-hot bash
+
+Просмотр правил auditd
+auditctl -l
+grep --color monitor_nginx_conf /var/log/audit/audit.log

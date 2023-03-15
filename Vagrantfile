@@ -1,18 +1,13 @@
 MACHINES = {
-    :ansible => {
+    :web => {
         :box_name => "almalinux/8",
-        :ip_addr => '192.168.1.2',
-        :script => './ansible.sh'
+        :ip_addr => '192.168.1.3',
+        :script => './web.sh'
     },
     :rsyslog => {
         :box_name => "almalinux/8",
         :ip_addr => '192.168.1.4',
         :script => './rsyslog.sh'
-    },
-    :elk => {
-        :box_name => "almalinux/8",
-        :ip_addr => '192.168.1.5',
-        :script => './elk.sh'
     },
 }
  
@@ -34,8 +29,6 @@ Vagrant.configure("2") do |config|
 		      cp /vagrant/id_rsa.pub /home/vagrant/.ssh
           sudo chown vagrant:vagrant /home/vagrant/.ssh/id_rsa.pub /home/vagrant/.ssh/id_rsa
           sudo chmod 700 /home/vagrant/.ssh/id_rsa.pub /home/vagrant/.ssh/id_rsa
-          sudo setenforce 0
-          sudo sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
           SHELL
         box.vm.provision "shell", privileged: true, path: boxconfig[:script]
     end

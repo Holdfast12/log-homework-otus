@@ -1,19 +1,14 @@
 #!/bin/bash
-
-yum install -y nginx
+dnf install -y nginx
 systemctl enable nginx --now
 
-#Логи аудита должны также уходить на удаленную систему
-cat <<'EOT' > /etc/rsyslog.d/audit.conf
-$ModLoad imfile
-$InputFileName /var/log/audit/audit.log
-$InputFileTag tag_audit_log:
-$InputFileStateFile audit_log
-$InputFileSeverity info
-$InputFileFacility local6
-$InputRunFileMonitor
-*.* @@192.168.1.3:514
+# добавление правила аудита файла конфигурации nginx
+cat <<'EOT' >> /etc/audit/rules.d/nginx.rules
+-D
+-b 8192
+-f 1
+-w /etc/nginx/nginx.conf -p wa -k monitor_nginx_conf
+-w /etc/nginx/conf.d/ -p wa -k monitor_nginx_conf
+
 EOT
-
-
-systemctl restart rsyslog
+service auditd restart
