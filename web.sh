@@ -13,13 +13,10 @@ cat <<'EOT' >> /etc/audit/rules.d/nginx.rules
 -w /etc/nginx/conf.d/ -p wa -k monitor_nginx_conf
 
 EOT
+
 service auditd restart
 
-cat <<'EOT' > /etc/rsyslog.d/crit.conf
-*.crit @@rsyslog:514
-
-EOT
-
+#аудит
 cat <<'EOT' > /etc/rsyslog.d/audit.conf
 $ModLoad imfile
 $InputFileName /var/log/audit/audit.log
@@ -29,7 +26,13 @@ $InputFileSeverity info
 $InputFileFacility local6
 $InputRunFileMonitor
 
-*.* @@rsyslog:514
+*.* @@logmachine:514
+
+EOT
+
+#все логи крит уровня
+cat <<'EOT' > /etc/rsyslog.d/all.conf
+*.crit @@logmachine:514
 
 EOT
 
