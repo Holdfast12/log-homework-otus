@@ -2,23 +2,23 @@
 - hosts: all
   become: true
   tasks:
-  - name: Set timezone to Moscow
+  - name: set timezone to Moscow
     timezone:
       #name: Asia/Tokyo
       name: Europe/Moscow
 
-  - name: Restart chronyd
+  - name: restart chronyd
     ansible.builtin.service:
       name: chronyd
       state: restarted
 
-  - name: Get time for print
+  - name: get time for print
     shell: "date"
     register: tstamp
 
-  - name: Print time
+  - name: print time
     debug:
-      msg: "Текущее время на сервере {{ tstamp.stdout }}"
+      msg: "текущее время на сервере {{ tstamp.stdout }}"
 
   - name: Install Vim
     ansible.builtin.dnf:
@@ -27,10 +27,49 @@
 
 - hosts: webmachine
   become: true
+  gather_facts: no
   tasks:
-  - name: Install nginx
+
+  - name: install nginx
     ansible.builtin.dnf:
       name: nginx
       state: latest
 
+  - name: start nginx
+    ansible.builtin.service:
+      name: nginx
+      state: started
+
+  - name: enable nginx
+    ansible.builtin.systemd:
+      name: nginx
+      enabled: yes
+
+- hosts: logmachine
+  become: true
+  gather_facts: no
+  tasks:
+
+  - name: started rsyslog
+    ansible.builtin.service:
+      name: rsyslog
+      state: started
+
+  - name: copy rsyslog config
+    copy:
+      src: ./rsyslog.conf
+      dest: /etc/rsyslog.conf
+      remote_src: no
+      mode: 0644
+      owner: root
+      group: root
+    notify:
+      - restart rsyslog
+
+
+  - name: restart rsyslog
+    ansible.builtin.service:
+      name: rsyslog
+      state: restarted
+    
 ...

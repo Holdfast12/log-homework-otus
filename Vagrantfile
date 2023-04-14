@@ -4,11 +4,15 @@
 MACHINES = {
     :webmachine => {
         :box_name => "almalinux/8",
-        :ip_addr => '192.168.1.3'
+        :ip_addr => '192.168.1.3',
+        :guest_port1 => '80',
+        :host_port1 => '8080'
     },
     :logmachine => {
         :box_name => "almalinux/8",
-        :ip_addr => '192.168.1.4'
+        :ip_addr => '192.168.1.4',
+        :guest_port1 => '5601',
+        :host_port1 => '5601'
     },
 }
  
@@ -22,6 +26,7 @@ Vagrant.configure("2") do |config|
         config.vm.box_check_update = false
         config.vm.box = boxconfig[:box_name]
         box.vm.host_name = boxname.to_s
+        box.vm.network "forwarded_port", guest: boxconfig[:guest_port1], host: boxconfig[:host_port1]
         box.vm.network "private_network", ip: boxconfig[:ip_addr], netmask: "255.255.255.0", virtualbox__intnet: "otus"
         box.vm.provider :virtualbox do |vb|
           vb.customize ["modifyvm", :id, "--memory", "512"]
