@@ -1,2 +1,0 @@
-output.elasticsearch:   
-    hosts: ["http://es-hot:9200"]
