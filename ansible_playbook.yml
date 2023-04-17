@@ -30,10 +30,10 @@
   gather_facts: no
   tasks:
 
-  - name: install nginx
+  - name: install nginx > 1.7
     ansible.builtin.dnf:
-      name: nginx
-      state: latest
+      name: nginx>1.7
+      state: present
 
   - name: start nginx
     ansible.builtin.service:
@@ -57,7 +57,7 @@
 
   - name: copy rsyslog config
     copy:
-      src: ./rsyslog.conf
+      src: ./logmachine_rsyslog.conf
       dest: /etc/rsyslog.conf
       remote_src: no
       mode: 0644
@@ -66,6 +66,7 @@
     notify:
       - restart rsyslog
 
+  handlers:
 
   - name: restart rsyslog
     ansible.builtin.service:
