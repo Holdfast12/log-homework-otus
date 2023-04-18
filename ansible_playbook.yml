@@ -40,16 +40,11 @@
     ansible.builtin.dnf:
       name: nginx > 1.7
       state: present
+    notify:
+      - start nginx
+      - enable nginx
 
-  - name: start nginx
-    ansible.builtin.service:
-      name: nginx
-      state: started
-
-  - name: enable nginx
-    ansible.builtin.systemd:
-      name: nginx
-      enabled: yes
+  handlers:
 
   - name: copy nginx config
     copy:
@@ -62,13 +57,22 @@
     notify:
       - restart nginx
 
-  handlers:
+  - name: start nginx
+    ansible.builtin.service:
+      name: nginx
+      state: started
+    notify:
+      - copy nginx config
 
   - name: restart nginx
     ansible.builtin.service:
       name: nginx
       state: restarted
 
+  - name: enable nginx
+    ansible.builtin.systemd:
+      name: nginx
+      enabled: yes
 
 - hosts: logmachine
   become: true
