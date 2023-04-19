@@ -1,0 +1,10 @@
+- name: copy rsyslog config
+  copy:
+    src: ./roles/rsyslog_server/files/rsyslog.conf
+    dest: /etc/rsyslog.conf
+    remote_src: no
+    mode: 0644
+    owner: root
+    group: root
+  notify:
+    - restart rsyslog

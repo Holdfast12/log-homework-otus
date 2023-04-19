@@ -1,0 +1,16 @@
+---
+- hosts: webmachine
+  become: true
+  roles:
+    - common
+    - nginx
+    - auditd_sender
+
+- hosts: logmachine
+  become: true
+  roles:
+    - common
+    - rsyslog_server
+    - auditd_reciever
+
+...

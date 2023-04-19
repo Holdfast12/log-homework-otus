@@ -32,8 +32,6 @@ Vagrant.configure("2") do |config|
           vb.customize ["modifyvm", :id, "--memory", "512"]
         end
         box.vm.provision "shell", inline: <<-SHELL
-          #sudo cp -f /usr/share/zoneinfo/Europe/Moscow /etc/localtime
-          #sudo localedef  -i ru_RU -f UTF-8 ru_RU.UTF-8
           echo -en "192.168.1.3 webmachine\n192.168.1.4 logmachine\n\n" | sudo tee -a /etc/hosts
           cat /vagrant/ssh_config > /home/vagrant/.ssh/config
           sudo chown vagrant:vagrant /home/vagrant/.ssh/config
@@ -42,7 +40,7 @@ Vagrant.configure("2") do |config|
           sudo sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
           SHELL
         box.vm.provision "ansible" do |ansible|
-          ansible.playbook = "ansible_playbook.yml"
+          ansible.playbook = "ansible/playbook.yml"
         end
     end
   end

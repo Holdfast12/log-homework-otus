@@ -1,0 +1,10 @@
+- name: copy auditd.conf
+  copy:
+    src: ./roles/auditd_reciever/files/auditd.conf
+    dest: /etc/audit/auditd.conf
+    remote_src: no
+    mode: 0644
+    owner: root
+    group: root
+  notify:
+    - restart auditd

@@ -1,0 +1,37 @@
+- name: install audisp
+  ansible.builtin.dnf:
+    name: audispd-plugins
+    state: present
+
+- name: copy auditd.conf
+  copy:
+    src: ./roles/auditd_sender/files/auditd.conf
+    dest: /etc/audit/auditd.conf
+    remote_src: no
+    mode: 0644
+    owner: root
+    group: root
+  notify:
+    - restart auditd
+
+- name: copy au-remote.conf
+  copy:
+    src: ./roles/auditd_sender/files/au-remote.conf
+    dest: /etc/audit/plugins.d/au-remote.conf
+    remote_src: no
+    mode: 0644
+    owner: root
+    group: root
+  notify:
+    - restart auditd
+
+- name: copy audisp-remote.conf
+  copy:
+    src: ./roles/auditd_sender/files/audisp-remote.conf
+    dest: /etc/audit/audisp-remote.conf
+    remote_src: no
+    mode: 0644
+    owner: root
+    group: root
+  notify:
+    - restart auditd

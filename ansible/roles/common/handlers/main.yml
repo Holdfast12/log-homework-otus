@@ -1,0 +1,16 @@
+- name: restart chronyd
+  ansible.builtin.service:
+    name: chronyd
+    state: restarted
+  notify:
+    - get time
+
+- name: get time
+  shell: "date"
+  register: tstamp
+  notify:
+    - print time
+
+- name: print time
+  debug:
+    msg: "текущее время на сервере {{ tstamp.stdout }}"
